@@ -1,4 +1,4 @@
-\documentclass[14pt]{extarticle}
+\documentclass[12pt]{extarticle}
 \usepackage[utf8]{inputenc}
 \usepackage{amsmath}
 \usepackage{graphicx}
@@ -13,9 +13,9 @@
 
 \section{Scaling Law}
 
-\subsection{Isobaric Core Radius}
+\subsection{Isobaric Core Radius---Version-1}
 
-Goal: Similar whole mantle temperature for 2D and 3D.
+Goal: Equivalent heat deposition for 2D and 3D
 
 
 $R_{\mathrm{planet}}$ = Radius of the planet
@@ -27,55 +27,135 @@ $r_{\mathrm{sphere}}$ = Radius of isobaric core = $\sqrt[3]{3} \times r_{\mathrm
 $r_{\mathrm{circle}} = ?$
 
 
-\begin{equation}
-   \frac{A_{\mathrm{ic}}}{A_{\mathrm{planet}}-A_{\mathrm{core}}} = \frac{V_{\mathrm{ic}}}{V_{\mathrm{planet}}-V_{\mathrm{core}}}
-\end{equation}
-
-\begin{equation}
-   \frac{\pi r_{\mathrm{circle}}^2}{\pi (R_{\mathrm{planet}}^2-R_{\mathrm{core}}^2)}  =  \frac {\frac{4}{3} \pi r_{\mathrm{sphere}}^3 } {\frac{4}{3} \pi (R_{\mathrm{planet}}^3-R_{\mathrm{core}}^3) }
-\end{equation}
-
-\begin{equation}
-   r_{\mathrm{circle}} = \sqrt{r_{\mathrm{sphere}}^3 \left(\frac{R_{\mathrm{planet}}^2 - R_{\mathrm{core}}^2}{R_{\mathrm{planet}}^3 - R_{\mathrm{core}}^3}\right)}
-\end{equation}
-
-\begin{equation}
-   r_{\mathrm{circle}} = \sqrt{\left({\sqrt[3]{3} \times r_{\mathrm{imp}}}\right)^3 \left(\frac{R_{\mathrm{planet}}^2 - R_{\mathrm{core}}^2}{R_{\mathrm{planet}}^3 - R_{\mathrm{core}}^3}\right)}
-\end{equation}
-
-\begin{equation}
-   r_{\mathrm{circle}} = r_{\mathrm{imp}}^{\frac{3}{2}} \times \sqrt{3 \left(\frac{R_{\mathrm{planet}}^2 - R_{\mathrm{core}}^2}{R_{\mathrm{planet}}^3 - R_{\mathrm{core}}^3}\right)}
-\end{equation}
-
-\begin{equation}
-   r_{\mathrm{circle}} = r_{\mathrm{imp}}^{\frac{3}{2}} \times 0.00064967601
-\end{equation}
-
+\begin{align*}
+   &\frac{A_{\mathrm{ic}}}{A_{\mathrm{planet}}-A_{\mathrm{core}}} = \frac{V_{\mathrm{ic}}}{V_{\mathrm{planet}}-V_{\mathrm{core}}} &  \\
+   %
+   &\frac{\pi r_{\mathrm{circle}}^2}{\pi (R_{\mathrm{planet}}^2-R_{\mathrm{core}}^2)}  =  \frac {\frac{4}{3} \pi r_{\mathrm{sphere}}^3 } {\frac{4}{3} \pi (R_{\mathrm{planet}}^3-R_{\mathrm{core}}^3) }& \\
+   %
+   &r_{\mathrm{circle}} = \sqrt{r_{\mathrm{sphere}}^3 \left(\frac{R_{\mathrm{planet}}^2 - R_{\mathrm{core}}^2}{R_{\mathrm{planet}}^3 - R_{\mathrm{core}}^3}\right)}& \\
+   %
+   &r_{\mathrm{circle}} = \sqrt{\left({\sqrt[3]{3} \times r_{\mathrm{imp}}}\right)^3 \left(\frac{R_{\mathrm{planet}}^2 - R_{\mathrm{core}}^2}{R_{\mathrm{planet}}^3 - R_{\mathrm{core}}^3}\right)} & \\
+   %
+   &r_{\mathrm{circle}} = r_{\mathrm{imp}}^{\frac{3}{2}} \times \sqrt{3 \left(\frac{R_{\mathrm{planet}}^2 - R_{\mathrm{core}}^2}{R_{\mathrm{planet}}^3 - R_{\mathrm{core}}^3}\right)}& \\
+   &r_{\mathrm{circle}} = r_{\mathrm{imp}}^{\frac{3}{2}} \times 0.00064967601& \\
+\end{align*}
 
 \clearpage
 
+Now, scale $r_{\mathrm{imp}}$:
 
-\subsection{Scale $r_{\mathrm{imp}}$}
+\begin{align*}
+   &r_{\mathrm{circle}} = r_{\mathrm{imp}}^{\frac{3}{2}} \times 0.00064967601& \\
+   %
+   &\sqrt[3]{3} \times r_{\mathrm{imp}}' = r_{\mathrm{imp}}^{\frac{3}{2}} \times 0.00064967601& \\
+   %
+   &r_{\mathrm{imp}}' = r_{\mathrm{imp}}^{\frac{3}{2}} \times 0.00045046019& \\
+\end{align*}
 
 \vspace{1cm}
 
-\begin{equation}
-   r_{\mathrm{circle}} = r_{\mathrm{imp}}^{\frac{3}{2}} \times 0.00064967601
-\end{equation}
+\subsection{Isobaric Core Radius---Version-2}
 
-\begin{equation}
-  \sqrt[3]{3} \times r_{\mathrm{imp}}' = r_{\mathrm{imp}}^{\frac{3}{2}} \times 0.00064967601
-\end{equation}
+The version---1 scaling law considered the whole volume (area for 2D) of the isocore. But the whole isocore is not inside the planet. In StagYY, the distance between the centre of the planet and the centre of the isocore, $d = R-r/2$. In 2D, that looks like the following figure.
 
-\begin{equation}
-  r_{\mathrm{imp}}' = r_{\mathrm{imp}}^{\frac{3}{2}} \times 0.00045046019
-\end{equation}
+\begin{figure}[th]
+    \centering
+    \includegraphics[width=0.98\textwidth]{Presentation1.pdf}
+    %\caption{\footnotesize\textbf{Comparison between the composite model and the two models: }$R_{\mathrm{min}} = 50$ km and $R_{\mathrm{max}}=2443$ km  }
+    \label{fig:2D}
+\end{figure}
+
+We need to exclude the volume (area for 2D) outside the planet. So we need to integrate the volume (area for 2D) upto R. The whole integration is divided into two parts.
+
+(1) Integrate the volume (area for 2D) "under" the "curve" of the isocore from $d = R-r/2$ to $x_0$
+
+(2) Integrate the volume (area for 2D) "under" the "curve" of the planet from $x_0$ to $R$
+
+Then add them.
+
+\subsubsection{Area of the isocore in 2D}
+
+The planet of radius $R$ is at $(0,0)$. The isocore of radius $r$ is at $(d,0)$ where $d = R-r/2$. The isocore intersects the planet at $X=x_0$. First, we need to figure out $x_0$ as this is the limit for the integrations.
+
+The equation of the isocore:
+
+    \begin{align*} 
+       (x-d)^2 + y^2 = R^2 \\
+       y^2 = R^2 + (x-d)^2 \\
+    \end{align*}
+
+The equation of the planet:
+
+    \begin{align*} 
+       x^2 + y^2 = R^2 \\
+       y^2 = R^2 + x^2 \\
+    \end{align*}
+
+From this we can write: 
+
+    \begin{align*} 
+      &R^2 + x^2 = R^2 + (x-d)^2 \\
+      &x = x_0 = \frac{R^2 - r^2 + d^2}{2d} \tag{1} \\
+    \end{align*}
+
+\clearpage
+
+\textbf{Part---1:} Area "under" the isocore curve (A$_1$)
+
+Isocore equation:
+
+    \begin{align*} 
+       &y^2 = r^2 - (x-d)^2 \\
+       &y = \sqrt{r^2 - (x-d)^2}
+    \end{align*}
+
+So, the total area "under" the isocore curve,
+
+    \begin{align*} 
+      A_1 = 2 \int_{d-r}^{x_0} \sqrt{r^2 - (x-d)^2} \,dx 
+    \end{align*}
+
+Put $x-d = u$ or $dx = du$
+
+When $x = d-r$, $u = x-d = (d-r)-d = -r$
+
+When $x = x_0$, $u = x_0 - d = u_0$
+
+So the integration becomes:
+
+    \begin{align*} 
+      A_1 &= 2 \int_{-r}^{u_0} \sqrt{r^2 - u^2} \,du \\
+      &= 2\left[  \frac{u \sqrt{r^2 - u^2}}{2} + \frac{r^2}{2} \sin^{-1}{ \left(  \frac{u}{r}  \right)  }   \right]_{-r}^{u_0} \\
+      &= 2\left[\left\{  \frac{u_0 \sqrt{r^2 - {u_0}^2}}{2} + \frac{r^2}{2} \sin^{-1}{\left(\frac{u_0}{r}\right)}   \right\} - \left\{ \frac{r^2}{2} \sin^{-1} (-1)  \right\}   \right] \\
+      &= u_0 \sqrt{r^2 - {u_0}^2} + r^2 \sin^{-1} \left(   \frac{u_0}{r}   \right) + \frac{r^2 \pi}{2} \tag{2}
+    \end{align*}
 
 
+\textbf{Part---2:} Area "under" the planet curve (A$_2$)
 
+Planet equation:
 
+    \begin{align*} 
+       &y^2 = R^2 - x^2 \\
+       &y = \sqrt{R^2 - x^2} \\
+    \end{align*}
 
+So, the total area "under" the planet curve,
 
+    \begin{align*} 
+      A_2 &= 2 \int_{x_0}^{R} \sqrt{R^2 - x^2} \,dx \\
+      &= 2 \left[   \frac{x \sqrt{R^2 - x^2}}{2} + \frac{R^2}{2} \sin^{-1}{ \left(\frac{x}{R} \right) }  \right]_{x_0}^R \\
+      &= 2 \left[  \left\{  \frac{R^2}{2} \sin^{-1}{(1)}  \right\} - \left\{ \frac{x_0 \sqrt{R^2-{x_0}^2}}{2} + \frac{R^2}{2} \sin^{-1}{\left(  \frac{x_0}{R} \right)} \right\}  \right] \\
+      &= \frac{R^2 \pi}{2} - x_0 \sqrt{R^2 - {x_0}^2} - R^2 \sin^{-1}{\left( \frac{x_0}{R} \right)} \tag{3}
+    \end{align*}
+
+So, total area of the isocore:
+
+    \begin{align*} 
+     A &= A_1 + A_2 \\
+     &= \left\{ u_0 \sqrt{r^2 - {u_0}^2} + r^2 \sin^{-1} \left(   \frac{u_0}{r}   \right) + \frac{r^2 \pi}{2} \right\} + 
+        \left\{  \frac{R^2 \pi}{2} - x_0 \sqrt{R^2 - {x_0}^2} - R^2 \sin^{-1}{\left( \frac{x_0}{R} \right)}  \right\}
+    \end{align*}
 
 \end{document}
 
