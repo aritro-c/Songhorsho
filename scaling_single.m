@@ -62,13 +62,10 @@ r_circle_v2 = fzero(objective_func, r_circle_v1);
 A_final = calc_area_2D(r_circle_v2, R);
 A_ratio = A_final / A_annulus;
 
-
+% Find out the scaled radius of the impactor
 r_imp_scaled_v1 = r_circle_v1/(3^(1/3));
 r_imp_scaled_v2 = r_circle_v2/(3^(1/3));
 
-r_imp/1000
-r_imp_scaled_v1
-r_imp_scaled_v2
 
 
 
