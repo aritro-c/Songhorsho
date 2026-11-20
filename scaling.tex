@@ -14,10 +14,7 @@
 
 \section{Scaling Law}
 
-\subsection{Isobaric Core Radius---Version-1}
-
-Goal: Equivalent heat deposition for 2D and 3D
-
+\subsection{Version-1}
 
 $R_{\mathrm{planet}}$ = Radius of the planet
 
@@ -25,7 +22,6 @@ $R_{\mathrm{core}}$ = Radius of the core
 
 $r_{\mathrm{sphere}}$ = Radius of isobaric core = $\sqrt[3]{3} \times r_{\mathrm{imp}}$ 
 
-$r_{\mathrm{circle}} = ?$
 
 
 \begin{align*}
@@ -39,6 +35,8 @@ $r_{\mathrm{circle}} = ?$
    %
    &r_{\mathrm{circle}} = r_{\mathrm{imp}}^{\frac{3}{2}} \times \sqrt{3 \left(\frac{R_{\mathrm{planet}}^2 - R_{\mathrm{core}}^2}{R_{\mathrm{planet}}^3 - R_{\mathrm{core}}^3}\right)}& \\
    &r_{\mathrm{circle}} = r_{\mathrm{imp}}^{\frac{3}{2}} \times 0.00064967601& \\
+    %
+   &R_{\mathrm{i}}' = 3^{\frac{1}{6}} \times R_{\mathrm{i}}^{\frac{3}{2}} \times  \sqrt{ \frac{R_{\mathrm{planet}}^2 - R_{\mathrm{core}}^2}{R_{\mathrm{planet}}^3 - R_{\mathrm{core}}^3}}& \\
 \end{align*}
 
 
@@ -51,26 +49,27 @@ Now, scale $r_{\mathrm{imp}}$:
    &\sqrt[3]{3} \times r_{\mathrm{imp}}' = r_{\mathrm{imp}}^{\frac{3}{2}} \times 0.00064967601& \\
    %
    &r_{\mathrm{imp}}' = r_{\mathrm{imp}}^{\frac{3}{2}} \times 0.00045046019& \\
+   &
 \end{align*}
 
-\vspace{1cm}
+\clearpage
 
-\subsection{Isobaric Core Radius---Version-2}
+\subsection{Version-2}
 
 The version---1 scaling law considered the whole volume (area for 2D) of the isocore. But the whole isocore is not inside the planet. In StagYY, the distance between the centre of the planet and the centre of the isocore, $d = R-r/2$. In 2D, that looks like the following figure.
 
 \begin{figure}[th]
     \centering
-    \includegraphics[width=0.98\textwidth]{Presentation1.pdf}
+    \includegraphics[width=0.98\textwidth]{Presentation2.pdf}
     %\caption{\footnotesize\textbf{Comparison between the composite model and the two models: }$R_{\mathrm{min}} = 50$ km and $R_{\mathrm{max}}=2443$ km  }
     \label{fig:2D}
 \end{figure}
 
 We need to exclude the volume (area for 2D) outside the planet. So we need to integrate the volume (area for 2D) upto R. The whole integration is divided into two parts.
 
-(1) Integrate the volume (area for 2D) "under" the "curve" of the isocore from $d = R-r/2$ to $x_0$
+(1) Integrate the volume (area for 2D) "inside" the "curve" of the isocore from $d-r$ to $x_0$
 
-(2) Integrate the volume (area for 2D) "under" the "curve" of the planet from $x_0$ to $R$
+(2) Integrate the volume (area for 2D) "inside" the "curve" of the planet from $x_0$ to $R$
 
 Then add them.
 
@@ -84,31 +83,31 @@ Then add them.
 
 \subsubsection{Area of the isocore in 2D}
 
-The planet of radius $R$ is at $(0,0)$. The isocore of radius $r$ is at $(d,0)$ where $d = R-r/2$. The isocore intersects the planet at $X=x_0$. First, we need to figure out $x_0$ as this is the limit for the integrations.
+The planet of radius $R$ is at $(0,0)$. The isocore of radius $r$ is at $(d,0)$ where $d = R-r/2$. The isocore intersects the planet at $X=x_0$. 
 
 The equation of the isocore:
 
     \begin{align*} 
        (x-d)^2 + y^2 = r^2 \\
-       y^2 = r^2 - (x-d)^2 \\
+       y^2 = r^2 - (x-d)^2 \tag{1} \\
     \end{align*}
 
 The equation of the planet:
 
     \begin{align*} 
        x^2 + y^2 = R^2 \\
-       y^2 = R^2 - x^2 \\
+       y^2 = R^2 - x^2 \tag{2} \\
     \end{align*}
 
-From this we can write: 
+Since $x_0$ is where the circles intersect, both $x$ and $y$ are the same in equations $(1)$ and $(2)$. So, from $(1)$ and $(2)$ we can write: 
 
     \begin{align*} 
       &R^2 - x^2 = r^2 - (x-d)^2 \\
-      &x = x_0 = \frac{R^2 - r^2 + d^2}{2d} \tag{1} \\
+      &x = x_0 = \frac{R^2 - r^2 + d^2}{2d} \tag{4} \\
     \end{align*}
 
 
-\textbf{Part---1:} Area "under" the isocore curve (A$_1$)
+\textbf{Integration Part---1:} Area "under" the isocore curve (A$_1$)
 
 Isocore equation:
 
@@ -123,7 +122,7 @@ So, the total area "under" the isocore curve,
       A_1 = 2 \int_{d-r}^{x_0} \sqrt{r^2 - (x-d)^2} \,dx 
     \end{align*}
 
-Put $x-d = u$ or $dx = du$
+Put $x-d = u$ or, $dx = du$
 
 When $x = d-r$, $u = x-d = (d-r)-d = -r$
 
@@ -135,11 +134,11 @@ So the integration becomes:
       A_1 &= 2 \int_{-r}^{u_0} \sqrt{r^2 - u^2} \,du \\
       &= 2\left[  \frac{u \sqrt{r^2 - u^2}}{2} + \frac{r^2}{2} \sin^{-1}{ \left(  \frac{u}{r}  \right)  }   \right]_{-r}^{u_0} \\
       &= 2\left[\left\{  \frac{u_0 \sqrt{r^2 - {u_0}^2}}{2} + \frac{r^2}{2} \sin^{-1}{\left(\frac{u_0}{r}\right)}   \right\} - \left\{ \frac{r^2}{2} \sin^{-1} (-1)  \right\}   \right] \\
-      &= u_0 \sqrt{r^2 - {u_0}^2} + r^2 \sin^{-1} \left(   \frac{u_0}{r}   \right) + \frac{r^2 \pi}{2} \tag{2}
+      &= u_0 \sqrt{r^2 - {u_0}^2} + r^2 \sin^{-1} \left(   \frac{u_0}{r}   \right) + \frac{r^2 \pi}{2} \tag{5}
     \end{align*}
 
 
-\textbf{Part---2:} Area "under" the planet curve (A$_2$)
+\textbf{Integration Part---2:} Area "under" the planet curve (A$_2$)
 
 
 Planet equation:
@@ -155,7 +154,7 @@ So, the total area "under" the planet curve,
       A_2 &= 2 \int_{x_0}^{R} \sqrt{R^2 - x^2} \,dx \\
       &= 2 \left[   \frac{x \sqrt{R^2 - x^2}}{2} + \frac{R^2}{2} \sin^{-1}{ \left(\frac{x}{R} \right) }  \right]_{x_0}^R \\
       &= 2 \left[  \left\{  \frac{R^2}{2} \sin^{-1}{(1)}  \right\} - \left\{ \frac{x_0 \sqrt{R^2-{x_0}^2}}{2} + \frac{R^2}{2} \sin^{-1}{\left(  \frac{x_0}{R} \right)} \right\}  \right] \\
-      &= \frac{R^2 \pi}{2} - x_0 \sqrt{R^2 - {x_0}^2} - R^2 \sin^{-1}{\left( \frac{x_0}{R} \right)} \tag{3}
+      &= \frac{R^2 \pi}{2} - x_0 \sqrt{R^2 - {x_0}^2} - R^2 \sin^{-1}{\left( \frac{x_0}{R} \right)} \tag{6}
     \end{align*}
 
 So, total area of the isocore:
@@ -181,22 +180,23 @@ So, total area of the isocore:
 
 \subsubsection{Volume of the isocore in 3D}
 
-$x_0$ and $d$ remain same. 
 
 The planet of radius $R$ is at $(0,0,0)$. The isocore of radius $r$ is at $(d,0,0)$. The isocore intersects the planet at $X=x_0$.
 
+$x_0$ and $d$ remain same. 
 
-\textbf{Part---1:} Volume inside the isocore curve (V$_1$)
 
-At a given $X$, a $YZ$ plane intersects the isocore, creating a circle. The radius of the circle is a function of distance from the centre of the planet.
+\textbf{Integration Part---1:} Volume inside the isocore (V$_1$)
+
+At a given $X$, a $YZ$ plane intersects the isocore, creating a circle. The radius of the circle is a function of $x$.
 
 The equation of isocore sphere:
 
     \begin{align*} 
         (x-d)^2 + y^2 + z^2 = r^2 \\
-        y^2 + z^2 = r^2 - (x-d)^2 \tag{4}
+        y^2 + z^2 = r^2 - (x-d)^2 \tag{7}
     \end{align*}
-The RHS of equation $(4)$ is the radius$^2$ of said circle.
+The RHS of equation $(7)$ is the radius$^2$ of said circle.
 
 So, the area of said circle
 
@@ -215,7 +215,7 @@ The total volume inside the isocore:
     \end{align*}
 
 
-\textbf{Part---2:} Volume inside the planet curve (V$_2$)
+\textbf{Integration Part---2:} Volume inside the planet (V$_2$)
 
 The equation of the planet sphere:
 
@@ -246,7 +246,91 @@ So the total volume of the isocore
        &+ \pi (R^3 - \frac{R^3}{3} - R^2 x_0 + \frac{{x_0}^3}{3}) \\
     \end{align*}
 
+
+
+
+
+
+Now that we have $A$ and $V$, we can find out the value of $r$ when $\frac{A}{A_{annulus}}$ and $\frac{V}{V_{annulus}}$ becomes equal.
+
+\clearpage
+
+\subsection{Version-3}
+
+The version-2 considered the 2D geometry to be a flat 2D circle. But in StagYY, 2D geometry is a "Spherical Annulus" which has a "Virtual-Thickness". Here we consider the virtual-thickness in our volume calculation.
+
+The volume of a spherical-annulus is:
+
+    \begin{align*} 
+        \int_{0}^{R} \int_{0}^{2\pi} r^2 \,dr \,d\phi \\
+    \end{align*}
+
+
+Where $R$ is the radius of the annulus, and $\phi$ is the longitude.
+
+\subsubsection{Volume of the whole annulus (Mantle) in 2D Spherical-Annulus}
+
+The planet of radius $R$ is at $(0,0)$. The radius of the core of the planet is $R_c$.
+
+The volume of the mantle,
+
+    \begin{align*} 
+        V_{annulus} &= \int_{R_c}^{R} \int_{0}^{2\pi} r^2 \,dr \,d\phi \\
+        &= \frac{1}{3} \int_{0}^{2\pi} \left( R^3 - {R_c}^3  \right)\,d\phi \\
+        &= \frac{2\pi}{3} \left(  R^3 - {R_c}^3  \right)
+    \end{align*}
+
+\subsubsection{Volume of the isocore in 2D Spherical-Annulus}
+
+The planet of radius $R$ is at $(0,0,0)$. The isocore of radius $r$ is at $(d,0,0)$. The isocore intersects the planet at $X=x_0$.
+
+$x_0$ and $d$ remain same: $x_0 = \frac{R^2 - r^2 + d^2}{2d}$ and $d = R - r/2$.
+
+\textbf{Integration Part---1:} Volume inside the isocore (V$^{ic}_1$)
+
+First we consider the "strip" of the isocore at constant $x$ and calculate its "area".
+
+The "area" of the strip is the (\textit{height} of the strip) $\times$ (\textit{length} of the strip).
+
+The \textit{height} of the area is the $Y$ component upto the isocore curve (remember, the $Z$ axis is the planet's pole). We can write:
+
+    \begin{align*} 
+        & y = x \tan \phi \\
+        &dy = x \sec^2 \phi \,d\phi \\
+    \end{align*}
+
+The \textit{length} of the strip is the distance from the centre of the planet (that is the logic of "Spherical Annulus"). We call that $\rho$. We can write $\rho$ in terms of $x$ and $\phi$:
+
+    \begin{align*} 
+        &\cos \phi = \frac{x}{\rho} \\
+        &\rho = \frac{x}{\cos \phi}
+    \end{align*}
+
+So, the "area" of the "strip" is
+
+    \begin{align*} 
+        &= 2 \int_{0}^{y_{max}} \rho \,dy \\
+        &= 2 \int_{0}^{\phi_{max}} \frac{x}{\cos \phi} \times x \sec^2 \phi \,d\phi \\
+        &= 2x^2 \int_{0}^{\phi_{max}} \sec^3 \phi \,d\phi \\
+    \end{align*}
+
+Here, $\phi_{max}$ is the polar coordinate ($\phi$) of the isocore; i.e.
+
+    \begin{align*} 
+        &\phi_{max} = \tan^{-1} \frac{\sqrt{r^2 - (x-d)^2}}{x} \\
+        &\tan (\phi_{max}) = \frac{\sqrt{r^2 - (x-d)^2}}{x} \\
+    \end{align*}
+
+We can also write:
+
+    \begin{align*} 
+        &\phi_{max} =  \sec^{-1} \frac{\rho}{x}  \\
+        &\sec (\phi_{max}) = \frac{\rho}{x} \\
+    \end{align*}
+
 \end{document}
+
+
 
 
 
