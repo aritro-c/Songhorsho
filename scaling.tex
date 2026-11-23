@@ -361,13 +361,13 @@ So, the "area" of the "strip" is
         &= 2 \int_{0}^{\phi_{\max}} \frac{x}{\cos \phi} \times x \sec^2 \phi \,d\phi \\
         &= 2x^2 \int_{0}^{\phi_{\max}} \sec^3 \phi \,d\phi \\
     \end{align*}
-Here, $\phi_{\max}$ is the polar coordinate ($\phi$) of the isocore; i.e.
+Since $y_{\max}^2 = r^2 - (x-d)^2$, We can write:
     \begin{align*} 
-        &\phi= \tan^{-1} \frac{\sqrt{r^2 - (x-d)^2}}{x} \\
+        &\phi_{\max}= \tan^{-1} \frac{y_{\max}}{x} = \tan^{-1} \frac{\sqrt{r^2 - (x-d)^2}}{x} \\
     \end{align*}
-We can also write:
+We can also write,
     \begin{align*} 
-        &\phi =  \sec^{-1} \frac{\rho}{x}  \\
+        &\phi_{\max} =  \sec^{-1} \frac{\rho_{\max}}{x}  \\
     \end{align*}
 Assume: \begin{align*} 
         I &= \int \sec^3 \phi \,d\phi \\
@@ -390,7 +390,7 @@ So,
     \begin{align*} 
          S_1 &= x^2  \left[  \frac{\rho_{\max} \sqrt{r^2 - (x-d)^2}}{x^2} + \log_e \left| \frac{\rho_{\max} + \sqrt{r^2 - (x-d)^2}}{x} \right|\right] \\
     \end{align*}
-Now, $\rho_{\max} = \sqrt{x^2 + y_{\max}^2} = \sqrt{x^2 + r^2 - (x-d)^2}$ (Since here, $y_{\max}^2 = r^2 - (x-d)^2)$.
+Now, $\rho_{\max} = \sqrt{x^2 + y_{\max}^2} = \sqrt{x^2 + r^2 - (x-d)^2}$
 
 So, the "area" of the "strip" in terms of $x$:
      \begin{align*} 
