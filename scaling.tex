@@ -14,6 +14,52 @@
 
 \section{Scaling Law}
 
+In StagYY, the thermal effect of impacts on the mantle is calculated using parameterization from \textit{Monteux et al.} and \textit{Senshu et al.}, where the thermal anomaly for an impact ($dT$) is calculated based on the distance from the center of the impact ($r$), and the isobaric core, i.e., the spherical region next to the impactor ($R_{\mathrm{ic}}$). Inside the isobaric core ($r \le R_{\mathrm{ic}}$), the temperature increase for an impactor of radius $R_{\mathrm{imp}}$ is expressed as:
+
+\begin{equation} \label{dT_in}
+   dT (r \le R_{\mathrm{ic}}) = T_{\mathrm{imp}} = \frac{v_{\mathrm{ratio}}^2 \gamma g R }{r_{\mathrm{ratio}}^3 \cdot 2.7 \cdot C_{\mathrm{p}}} 
+\end{equation}
+
+\begin{table}[hbt!]
+\centering
+\begin{tabular}{|c|c|}
+\hline
+Parameter & Explanation \\
+\hline
+$v_{\mathrm{ratio}}$ & Velocity of the impactor / the escape velocity of the planet \\
+$\gamma$ & Energy conversion efficiency (non-dimensional) \\
+$g$ & Gravitational acceleration at the surface \\
+$R$ & Radius of the planet \\
+$r_{\mathrm{ratio}}$ & $R_{\mathrm{ic}}/R_{\mathrm{imp}}$ \\
+$C_{\mathrm{p}}$ & Heat capacity \\
+
+\hline
+\end{tabular}
+\end{table}
+
+Where $R_{ic} = 3^{1/3} R_{\mathrm{imp}}$. Outside the isobaric core ($r>R_{\mathrm{ic}}$), the thermal anomaly decays radially away from the impact center following an inverse power law:
+
+
+\begin{equation} \label{dT_out}
+    dT(r > R_{\mathrm{ic}}) = T_{\mathrm{imp}} \times \left(\frac{R_{\mathrm{ic}}}{r}\right)^{4.4}
+\end{equation}
+
+So, the temperature at the impact site for each cell,
+
+\begin{equation} \label{T_imp}
+    T (r) = T_0 + dT
+\end{equation}
+
+Where $T_0$ is the mantle temperature in that cell.
+
+This is physically consistent for 3D simulations. But $R_{\mathrm{ic}}$ is consisdered to be the same for 2D simulations which is not physically consistent considering the ratio of the mantle volume and the volume of the thermal anomaly. Thus a parameterization is needed to scale the impactors for 2D simulations. The main goal is: Each impact in 2D simulation will deposit equivalent heat as the 3D counterpart, i.e., the mean mantle temperature (mass averaged, which is how StagYY calculates mean) will increase the exact same amount for 2D and 3D impact simulations.
+
+Assume the addition of a quantity of heat $\Delta Q$ into an object of mass $m$ raises its temperature by an amount $\Delta T$. So, $\Delta Q = c_{\mathrm{p}} m \Delta T$, where $c_{\mathrm{p}}$ is specific heat capacity. Since $m = \rho V$, we can write: $\Delta Q = c_{\mathrm{p}} \rho V \Delta T$. Considering $\Delta T$ to be constant (which is true in StgaYY), $\Delta Q \propto V$ or, $\Delta Q \propto V_{\mathrm{isocore}}$. Thus, for scaling the impact simulation in StagYY, the main objective is to scale the radius of the isocore.
+
+\clearpage
+
+
+
 \subsection{Version-1}
 
 $R_{\mathrm{planet}}$ = Radius of the planet
@@ -22,10 +68,18 @@ $R_{\mathrm{core}}$ = Radius of the core
 
 $r_{\mathrm{sphere}}$ = Radius of isobaric core = $\sqrt[3]{3} \times r_{\mathrm{imp}}$ 
 
+Deposit of equivalent heat in 2D and 3D means:
+
+\begin{align*}
+   \frac{V_{\mathrm{isocore}}^{2\mathrm{D}}}{V_{\mathrm{Mantle}}^{2\mathrm{D}}} = \frac{V_{\mathrm{isocore}}^{3\mathrm{D}}}{V_{\mathrm{Mantle}}^{3\mathrm{D}}} \\
+\end{align*}
+
+The "volume" in 2D is just surface area: $A$. In 3D, the volume is $V$.
+
 
 
 \begin{align*}
-   &\frac{A_{\mathrm{ic}}}{A_{\mathrm{planet}}-A_{\mathrm{core}}} = \frac{V_{\mathrm{ic}}}{V_{\mathrm{planet}}-V_{\mathrm{core}}} &  \\
+   &\frac{A_{\mathrm{isocore}}}{A_{\mathrm{planet}}-A_{\mathrm{core}}} = \frac{V_{\mathrm{isocore}}}{V_{\mathrm{planet}}-V_{\mathrm{core}}} &  \\
    %
    &\frac{\pi r_{\mathrm{circle}}^2}{\pi (R_{\mathrm{planet}}^2-R_{\mathrm{core}}^2)}  =  \frac {\frac{4}{3} \pi r_{\mathrm{sphere}}^3 } {\frac{4}{3} \pi (R_{\mathrm{planet}}^3-R_{\mathrm{core}}^3) }& \\
    %
@@ -36,7 +90,6 @@ $r_{\mathrm{sphere}}$ = Radius of isobaric core = $\sqrt[3]{3} \times r_{\mathrm
    &r_{\mathrm{circle}} = r_{\mathrm{imp}}^{\frac{3}{2}} \times \sqrt{3 \left(\frac{R_{\mathrm{planet}}^2 - R_{\mathrm{core}}^2}{R_{\mathrm{planet}}^3 - R_{\mathrm{core}}^3}\right)}& \\
    &r_{\mathrm{circle}} = r_{\mathrm{imp}}^{\frac{3}{2}} \times 0.00064967601& \\
     %
-   &R_{\mathrm{i}}' = 3^{\frac{1}{6}} \times R_{\mathrm{i}}^{\frac{3}{2}} \times  \sqrt{ \frac{R_{\mathrm{planet}}^2 - R_{\mathrm{core}}^2}{R_{\mathrm{planet}}^3 - R_{\mathrm{core}}^3}}& \\
 \end{align*}
 
 
@@ -286,47 +339,119 @@ The planet of radius $R$ is at $(0,0,0)$. The isocore of radius $r$ is at $(d,0,
 
 $x_0$ and $d$ remain same: $x_0 = \frac{R^2 - r^2 + d^2}{2d}$ and $d = R - r/2$.
 
-\textbf{Integration Part---1:} Volume inside the isocore (V$^{ic}_1$)
+\textbf{Integration Part---1:} Volume inside the isocore ($V^{ic}_1$)
 
 First we consider the "strip" of the isocore at constant $x$ and calculate its "area".
 
 The "area" of the strip is the (\textit{height} of the strip) $\times$ (\textit{length} of the strip).
 
-The \textit{height} of the area is the $Y$ component upto the isocore curve (remember, the $Z$ axis is the planet's pole). We can write:
-
+The \textit{height} of the "strip" is the $Y$ component upto the isocore curve (remember, the $Z$ axis is the planet's pole). We can write:
     \begin{align*} 
         & y = x \tan \phi \\
         &dy = x \sec^2 \phi \,d\phi \\
     \end{align*}
-
 The \textit{length} of the strip is the distance from the centre of the planet (that is the logic of "Spherical Annulus"). We call that $\rho$. We can write $\rho$ in terms of $x$ and $\phi$:
+    \begin{align*} 
+        &\cos \phi = \frac{x}{\rho} \\
+        &\rho = \frac{x}{\cos \phi}
+    \end{align*}
+So, the "area" of the "strip" is
+    \begin{align*} 
+        S_1 &= 2 \int_{0}^{y_{\max}} \rho \,dy \\
+        &= 2 \int_{0}^{\phi_{\max}} \frac{x}{\cos \phi} \times x \sec^2 \phi \,d\phi \\
+        &= 2x^2 \int_{0}^{\phi_{\max}} \sec^3 \phi \,d\phi \\
+    \end{align*}
+Here, $\phi_{\max}$ is the polar coordinate ($\phi$) of the isocore; i.e.
+    \begin{align*} 
+        &\phi= \tan^{-1} \frac{\sqrt{r^2 - (x-d)^2}}{x} \\
+    \end{align*}
+We can also write:
+    \begin{align*} 
+        &\phi =  \sec^{-1} \frac{\rho}{x}  \\
+    \end{align*}
+Assume: \begin{align*} 
+        I &= \int \sec^3 \phi \,d\phi \\
+        &= \int \sec \phi \sec^2 \phi \,d\phi \\
+        &= \sec \phi \int \sec^2 \phi \,d\phi - \int \left[ \frac{d}{dx} \sec \phi \int \sec^2 \phi \,d\phi \right] \,d\phi \\
+        &= \sec \phi \tan \phi  - \int (\sec \phi \tan \phi) (\tan \phi) \,d\phi \\
+        &= \sec \phi \tan \phi  - \int \sec \phi \tan^2 \phi \,d\phi \\
+        &= \sec \phi \tan \phi  -  \int \sec \phi (\sec^2 \phi -1) \,d\phi \\
+        &= \sec \phi \tan \phi  - \int \sec^3 \phi \,d\phi + \int \sec \phi \,d\phi \\
+        I &= \sec \phi \tan \phi  -I + \int \sec \phi \,d\phi \\
+        2I &= \sec \phi \tan \phi + \log_e \left|\sec \phi + \tan \phi \right| \\
+        I &= \frac{1}{2} \left\{  \sec \phi \tan \phi + \log_e \left|\sec \phi + \tan \phi \right|\right\}
+    \end{align*}
+Now put limits. $I(0) = 0$. So,
+    \begin{align*} 
+        I = I(\phi_{\max}) &= \frac{1}{2} \left[  \sec \phi_{\max} \tan \phi_{\max} + \log_e \left|\sec \phi_{\max} + \tan \phi_{\max} \right|\right] \\
+        &= \frac{1}{2} \left[  \frac{\rho_{\max} \sqrt{r^2 - (x-d)^2}}{x^2} + \log_e \left| \frac{\rho_{\max} + \sqrt{r^2 - (x-d)^2}}{x} \right|\right] \\
+    \end{align*}
+So, 
+    \begin{align*} 
+         S_1 &= x^2  \left[  \frac{\rho_{\max} \sqrt{r^2 - (x-d)^2}}{x^2} + \log_e \left| \frac{\rho_{\max} + \sqrt{r^2 - (x-d)^2}}{x} \right|\right] \\
+    \end{align*}
+Now, $\rho_{\max} = \sqrt{x^2 + y_{\max}^2} = \sqrt{x^2 + r^2 - (x-d)^2}$ (Since here, $y_{\max}^2 = r^2 - (x-d)^2)$.
 
+So, the "area" of the "strip" in terms of $x$:
+     \begin{align*} 
+         S_1(x) &=  \sqrt{\left\{x^2 + r^2 - (x-d)^2\right\}  \left\{r^2 - (x-d)^2\right\}} + x^2 \log_e \left| \frac{\sqrt{x^2 + r^2 - (x-d)^2} + \sqrt{r^2 - (x-d)^2}}{x} \right| \\
+     \end{align*}
+So, $V^{ic}_1 = \int_{d-r}^{x_0} S_1(x) \,dx$, which can be done numerically in MATLAB.
+ 
+
+\vspace{1cm}
+
+
+\textbf{Integration Part---2:} Volume inside the planet ($V^{ic}_2$):
+
+Just like part---1, assume a "strip" at constant $x$.
+
+The \textit{height} of the "strip" is the $Y$ component upto the planet curve. So just like before,
+     \begin{align*} 
+         dy = x  \sec^2 \phi \,d \phi
+     \end{align*}
+
+The \textit{length} of the strip is the distance from the centre of the planet ($\rho$). Just like before,
     \begin{align*} 
         &\cos \phi = \frac{x}{\rho} \\
         &\rho = \frac{x}{\cos \phi}
     \end{align*}
 
 So, the "area" of the "strip" is
-
     \begin{align*} 
-        &= 2 \int_{0}^{y_{max}} \rho \,dy \\
-        &= 2 \int_{0}^{\phi_{max}} \frac{x}{\cos \phi} \times x \sec^2 \phi \,d\phi \\
-        &= 2x^2 \int_{0}^{\phi_{max}} \sec^3 \phi \,d\phi \\
+        S_2 &= 2 \int_{0}^{y_{\max}} \rho \,dy \\
+        &= 2 \int_{0}^{\phi_{\max}} \frac{x}{\cos \phi} \times x \sec^2 \phi \,d\phi \\
+        &= 2x^2 \int_{0}^{\phi_{\max}} \sec^3 \phi \,d\phi \\
+        &= x^2 \left[  \sec \phi_{\max} \tan \phi_{\max} + \log_e \left|\sec \phi_{\max} + \tan \phi_{\max} \right|\right] \\
     \end{align*}
 
-Here, $\phi_{max}$ is the polar coordinate ($\phi$) of the isocore; i.e.
-
-    \begin{align*} 
-        &\phi_{max} = \tan^{-1} \frac{\sqrt{r^2 - (x-d)^2}}{x} \\
-        &\tan (\phi_{max}) = \frac{\sqrt{r^2 - (x-d)^2}}{x} \\
+Since the curve we are dealing with here is the planet's curve, $\rho_{\max} = R$. So,
+\begin{align*} 
+        &\phi_{\max} = \tan^{-1} \frac{\sqrt{\rho_{\max}^2 - x^2}}{x} = \tan^{-1} \frac{\sqrt{R^2 - x^2}}{x} \\
     \end{align*}
-
 We can also write:
-
     \begin{align*} 
-        &\phi_{max} =  \sec^{-1} \frac{\rho}{x}  \\
-        &\sec (\phi_{max}) = \frac{\rho}{x} \\
+        &\phi_{\max} =  \sec^{-1} \frac{\rho_{\max}}{x} =  \sec^{-1} \frac{R}{x} \\
     \end{align*}
+So,
+    \begin{align*} 
+        S_2 (x) &= x^2 \left[  \frac{R}{x} \times \frac{\sqrt{R^2 -x^2}}{x} + \log_e \left| \frac{R}{x} + \frac{\sqrt{R^2 -x^2}}{x}  \right|  \right] \\
+        &= R \sqrt{R^2 -x^2} + x^2 \log_e \left| \frac{R+\sqrt{R^2 -x^2}}{x}  \right|   \\
+    \end{align*}
+So, $V^{ic}_2 = \int_{x_0}^{R} S_2(x) \,dx$, which can be done numerically in MATLAB.
+
+And $V^{ic}_{2D} =  V^{ic}_1 + V^{ic}_2$
+
+\subsubsection{Volume of the isocore in 3D}
+
+This is the same as Version---2. So,
+\begin{align*} 
+    V^{ic}_{3D}&= \pi \left[ \left\{ r^2 x_0 - \frac{{x_0}^3}{3} + {x_0}^2d -d^2x_0 \right\} -   \left\{ r^2 (d-r) - \frac{(d-r)^3}{3} + (d-r)^2 d - d^2 (d-r) \right\}   \right] \\
+       &+ \pi (R^3 - \frac{R^3}{3} - R^2 x_0 + \frac{{x_0}^3}{3}) \\
+\end{align*}
+
+
+Now that we have $V^{ic}_{2D}$ and $V^{ic}_{3D}$, we can find out the value of $r$ when $\frac{V^{ic}_{2D}}{V_{annulus}}$ and $\frac{V^{ic}_{3D}}{V_{3D}}$ becomes equal in MATLAB.
 
 \end{document}
 
